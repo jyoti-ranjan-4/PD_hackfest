@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="station-service" id="1">
+      <comment>Create station table</comment>
+      <sql>
+        CREATE TABLE public.station
+        (
+            id uuid NOT NULL,
+            city character varying(255) COLLATE pg_catalog."default",
+            country character varying(255) COLLATE pg_catalog."default",
+            country_code character varying(255) COLLATE pg_catalog."default",
+            latitude double precision NOT NULL,
+            longitude double precision NOT NULL,
+            name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+            registered_on timestamp without time zone NOT NULL,
+            serial character varying(255) COLLATE pg_catalog."default" NOT NULL,
+            CONSTRAINT station_pkey PRIMARY KEY (id),
+            CONSTRAINT uk_n8mucdp0jk0ykhjyikkjifjnp UNIQUE (serial)
+        )
+        
+        TABLESPACE pg_default;
+      </sql>
+      <sql>
+        ALTER TABLE public.station
+            OWNER to qiot;
+      </sql>
+      <sql>
+        CREATE INDEX station_coordinates_idx
+            ON public.station USING btree
+            (longitude ASC NULLS LAST, latitude ASC NULLS LAST)
+            TABLESPACE pg_default;
+      </sql>
+      <sql>
+        CREATE INDEX station_location_idx
+            ON public.station USING btree
+            (country_code COLLATE pg_catalog."default" ASC NULLS LAST, city COLLATE pg_catalog."default" ASC NULLS LAST)
+            TABLESPACE pg_default;
+      </sql>
+    </changeSet>
+    
+</databaseChangeLog>
