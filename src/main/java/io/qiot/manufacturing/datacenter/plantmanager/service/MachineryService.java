@@ -20,12 +20,6 @@ public class MachineryService {
     @Inject
     Logger LOGGER;
 
-    // @Inject
-    // GeometryFactory gfactory;
-
-    @Inject
-    FactoryService factoryService;
-
     @Inject
     FactoryRepository factoryRepository;
 
