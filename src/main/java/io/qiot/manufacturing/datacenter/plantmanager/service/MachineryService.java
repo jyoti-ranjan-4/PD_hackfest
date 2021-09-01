@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 
-import io.qiot.manufacturing.datacenter.plantmanager.domain.dto.MachineryDTO;
+import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.MachineryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.MachineryRepository;

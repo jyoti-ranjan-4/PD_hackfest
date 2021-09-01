@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 
-import io.qiot.manufacturing.datacenter.plantmanager.domain.dto.MachineryDTO;
+import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.datacenter.plantmanager.service.MachineryService;
 
 /**

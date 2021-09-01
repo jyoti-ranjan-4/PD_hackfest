@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.all.commons.util.converter.DataObjectConverter;
-import io.qiot.manufacturing.datacenter.plantmanager.domain.dto.MachineryDTO;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.FactoryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.MachineryBean;
 
