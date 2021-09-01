@@ -28,8 +28,8 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 public class MachineryBean extends PanacheEntityBase {
 
     @Id
-    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid-gen")
+    @GenericGenerator(name = "machinery-uuid-gen", strategy = "uuid2")
+    @GeneratedValue(generator = "machinery-uuid-gen")
     @Type(type = "pg-uuid")
     public UUID id;
     @Column(nullable = false)

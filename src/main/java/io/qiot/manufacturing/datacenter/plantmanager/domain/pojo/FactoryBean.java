@@ -32,8 +32,8 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 public class FactoryBean extends PanacheEntityBase {
 
     @Id
-    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid-gen")
+    @GenericGenerator(name = "factory-uuid-gen", strategy = "uuid2")
+    @GeneratedValue(generator = "factory-uuid-gen")
     @Type(type = "pg-uuid")
     public UUID id;
     @Column(nullable = false, unique = true)

@@ -8,7 +8,6 @@
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <changeSet author="datacenter-plant-manager" id="1">
-      <comment>Create station table</comment>
       <sql>
         create table factory (
            id uuid not null,
@@ -47,7 +46,7 @@
 	       add constraint FKsx941tkpbcrt6b6lmahfkcg8t 
 	       foreign key (factory_id) 
 	       references factory
-      <sql>
+      </sql>
     </changeSet>
     
 </databaseChangeLog>
