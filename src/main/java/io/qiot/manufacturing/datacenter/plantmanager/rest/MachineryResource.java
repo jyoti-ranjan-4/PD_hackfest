@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
+import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
 import io.qiot.manufacturing.datacenter.plantmanager.service.MachineryService;
 
 /**
@@ -56,18 +57,20 @@ public class MachineryResource {
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public UUID add(@QueryParam("serial") @NotNull String serial,
+    public SubscriptionResponse add(
+            @QueryParam("serial") @NotNull String serial,
             @QueryParam("name") @NotNull String name,
             @QueryParam("factoryId") @NotNull UUID factoryId) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("register(String) - start");
         }
 
-        UUID id = service.add(serial, name, factoryId);
+        SubscriptionResponse response = service.subscribe(serial, name,
+                factoryId);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("register(String) - end");
         }
-        return id;
+        return response;
     }
 
 }

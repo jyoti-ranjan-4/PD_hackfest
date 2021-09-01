@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
+import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.FactoryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.util.converter.FactoryConverter;
@@ -28,13 +29,17 @@ public class FactoryService {
     @Inject
     FactoryConverter converter;
 
-    public UUID add(String serial, String name) {
+    public SubscriptionResponse subscribe(String serial, String name) {
         FactoryBean factoryBean = new FactoryBean();
         factoryBean.serial = serial;
         factoryBean.name = name;
 
         repository.persist(factoryBean);
-        return factoryBean.id;
+
+        //TODO: implement the call to the Registration Service
+        SubscriptionResponse response=new SubscriptionResponse();
+        response.id=factoryBean.id;
+        return response;
     }
 
     public FactoryDTO getById(UUID id) {
