@@ -1,6 +1,5 @@
 package io.qiot.manufacturing.datacenter.plantmanager.persistence;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;

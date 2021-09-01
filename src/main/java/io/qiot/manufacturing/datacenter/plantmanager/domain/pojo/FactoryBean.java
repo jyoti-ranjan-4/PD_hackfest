@@ -40,6 +40,8 @@ public class FactoryBean extends PanacheEntityBase {
     public String serial;
     @Column(nullable = false, unique = true)
     public String name;
+    @Column(nullable = false)
+    public boolean active = true;
     @Column(name = "registered_on", nullable = false, columnDefinition = "TIMESTAMP")
     @CreationTimestamp
     public Instant registeredOn;

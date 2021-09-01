@@ -36,8 +36,10 @@ public class MachineryBean extends PanacheEntityBase {
     public String serial;
     @Column(nullable = false)
     public String name;
-    @ManyToOne
+    @ManyToOne(optional = false)
     public FactoryBean factory;
+    @Column(nullable = false)
+    public boolean active = true;
     @Column(name = "registered_on", nullable = false, columnDefinition = "TIMESTAMP")
     @CreationTimestamp
     public Instant registeredOn;

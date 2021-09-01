@@ -1,6 +1,5 @@
 package io.qiot.manufacturing.datacenter.plantmanager.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,13 +28,13 @@ public class FactoryService {
     @Inject
     FactoryConverter converter;
 
-    public String add(String serial, String name) {
+    public UUID add(String serial, String name) {
         FactoryBean factoryBean = new FactoryBean();
         factoryBean.serial = serial;
         factoryBean.name = name;
 
         repository.persist(factoryBean);
-        return factoryBean.id.toString();
+        return factoryBean.id;
     }
 
     public FactoryDTO getById(UUID id) {

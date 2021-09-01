@@ -27,7 +27,7 @@ import io.qiot.manufacturing.datacenter.plantmanager.service.FactoryService;
  * @author andreabattaglia
  *
  */
-@Path("/station")
+@Path("/factory")
 public class FactoryResource {
 
     @Inject
@@ -56,13 +56,13 @@ public class FactoryResource {
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String add(@QueryParam("serial") @NotNull String serial,
+    public UUID add(@QueryParam("serial") @NotNull String serial,
             @QueryParam("name") @NotNull String name) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("register(String) - start");
         }
 
-        String id = service.add(serial, name);
+        UUID id = service.add(serial, name);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("register(String) - end");
         }
