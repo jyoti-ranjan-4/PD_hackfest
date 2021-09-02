@@ -1,4 +1,4 @@
-package io.qiot.manufacturing.datacenter.plantmanager.registration;
+package io.qiot.manufacturing.datacenter.plantmanager.service.registration;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
+import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateResponse;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryCertificateRequest;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.MachineryCertificateRequest;
 
@@ -21,14 +21,14 @@ public interface RegistrationServiceClient {
     @Path("/factory")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public SubscriptionResponse subscribeFactory(
+    public CertificateResponse subscribeFactory(
             @Valid FactoryCertificateRequest request);
 
     @PUT
     @Path("/machinery")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public SubscriptionResponse subscribeMachinery(
+    public CertificateResponse subscribeMachinery(
             @Valid MachineryCertificateRequest request);
 
 }

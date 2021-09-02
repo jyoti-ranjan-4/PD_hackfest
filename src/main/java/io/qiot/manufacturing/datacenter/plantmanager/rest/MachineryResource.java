@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
 import io.qiot.manufacturing.all.commons.domain.registration.MachineryRegisterRequest;
-import io.qiot.manufacturing.datacenter.plantmanager.service.MachineryService;
+import io.qiot.manufacturing.datacenter.plantmanager.service.machinery.MachineryService;
 
 /**
  * Validation through hibernate validator:

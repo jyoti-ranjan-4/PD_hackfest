@@ -1,4 +1,4 @@
-package io.qiot.manufacturing.datacenter.plantmanager.service;
+package io.qiot.manufacturing.datacenter.plantmanager.service.machinery;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,11 +15,11 @@ import io.qiot.manufacturing.all.commons.domain.registration.MachineryRegisterRe
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.MachineryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.MachineryRepository;
-import io.qiot.manufacturing.datacenter.plantmanager.registration.RegistrationServiceClient;
+import io.qiot.manufacturing.datacenter.plantmanager.service.registration.RegistrationServiceClient;
 import io.qiot.manufacturing.datacenter.plantmanager.util.converter.MachineryConverter;
 
 @ApplicationScoped
-public class MachineryService {
+class MachineryServiceImpl implements MachineryService {
 
     @Inject
     Logger LOGGER;
@@ -37,6 +37,7 @@ public class MachineryService {
     @RestClient
     RegistrationServiceClient registrationServiceClient;
 
+    @Override
     public SubscriptionResponse subscribe(MachineryRegisterRequest request) {
         MachineryBean machineryBean = new MachineryBean();
         machineryBean.serial = request.serial;
@@ -50,11 +51,13 @@ public class MachineryService {
         return response;
     }
 
+    @Override
     public MachineryDTO getById(UUID id) {
         MachineryBean machineryBean = machineryRepository.findById(id);
         return converter.sourceToDest(machineryBean);
     }
 
+    @Override
     public List<MachineryDTO> getAllStations() {
         List<MachineryDTO> machineryDTOs = null;
         List<MachineryBean> machineryBeans = machineryRepository.findAll().list();
