@@ -6,13 +6,16 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
+import io.qiot.manufacturing.all.commons.domain.registration.MachineryRegisterRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.MachineryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.MachineryRepository;
+import io.qiot.manufacturing.datacenter.plantmanager.registration.RegistrationServiceClient;
 import io.qiot.manufacturing.datacenter.plantmanager.util.converter.MachineryConverter;
 
 @ApplicationScoped
@@ -30,11 +33,15 @@ public class MachineryService {
     @Inject
     MachineryConverter converter;
 
-    public SubscriptionResponse subscribe(String serial, String name, UUID factoryId) {
+    @Inject
+    @RestClient
+    RegistrationServiceClient registrationServiceClient;
+
+    public SubscriptionResponse subscribe(MachineryRegisterRequest request) {
         MachineryBean machineryBean = new MachineryBean();
-        machineryBean.serial = serial;
-        machineryBean.name = name;
-        machineryBean.factory=factoryRepository.findById(factoryId);
+        machineryBean.serial = request.serial;
+        machineryBean.name = request.name;
+        machineryBean.factory=factoryRepository.findById(request.factoryId);
         
         
         //TODO: implement the call to the Registration Service

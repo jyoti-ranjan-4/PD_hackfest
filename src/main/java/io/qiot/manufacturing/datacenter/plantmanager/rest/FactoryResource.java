@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,13 +13,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
+import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryRegisterRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.service.FactoryService;
 
 /**
@@ -55,16 +56,15 @@ public class FactoryResource {
 
     @Transactional
     @PUT
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public SubscriptionResponse add(
-            @QueryParam("serial") @NotNull String serial,
-            @QueryParam("name") @NotNull String name) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public SubscriptionResponse subscribe(
+            @Valid FactoryRegisterRequest request) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("register(String) - start");
         }
 
-        SubscriptionResponse response = service.subscribe(serial, name);
+        SubscriptionResponse response = service.subscribe(request);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("register(String) - end");
         }
