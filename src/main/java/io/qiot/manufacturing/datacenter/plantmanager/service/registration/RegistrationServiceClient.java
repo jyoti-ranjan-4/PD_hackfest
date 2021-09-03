@@ -1,7 +1,7 @@
 package io.qiot.manufacturing.datacenter.plantmanager.service.registration;
 
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -17,18 +17,17 @@ import io.qiot.manufacturing.datacenter.commons.domain.registration.MachineryCer
 @RegisterRestClient(configKey = "registration-service-api")
 public interface RegistrationServiceClient {
 
-    @PUT
+    @POST
     @Path("/factory")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public CertificateResponse subscribeFactory(
-            @Valid FactoryCertificateRequest request);
+    public CertificateResponse registerFactory(FactoryCertificateRequest data);
 
-    @PUT
+    @POST
     @Path("/machinery")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public CertificateResponse subscribeMachinery(
-            @Valid MachineryCertificateRequest request);
+    public CertificateResponse registerMachinery(
+             MachineryCertificateRequest data);
 
 }

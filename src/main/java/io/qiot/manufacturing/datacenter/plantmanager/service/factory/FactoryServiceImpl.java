@@ -15,6 +15,7 @@ import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateR
 import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryCertificateRequest;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryRegisterRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.FactoryBean;
+import io.qiot.manufacturing.datacenter.plantmanager.exception.SubscriptionException;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.service.registration.RegistrationServiceClient;
 import io.qiot.manufacturing.datacenter.plantmanager.util.converter.FactoryConverter;
@@ -26,7 +27,7 @@ class FactoryServiceImpl implements FactoryService {
     Logger LOGGER;
 
     @Inject
-    FactoryRepository repository;
+    FactoryRepository factoryRepository;
 
     @Inject
     FactoryConverter converter;
@@ -44,7 +45,10 @@ class FactoryServiceImpl implements FactoryService {
         factoryBean.serial = request.serial;
         factoryBean.name = request.name;
 
-        repository.persistAndFlush(factoryBean);
+        factoryRepository.persistAndFlush(factoryBean);
+
+        LOGGER.debug("Factory entity persisted, factory ID assigned: {}",
+                factoryBean.id);
 
         /*
          * Get certificates
@@ -56,7 +60,14 @@ class FactoryServiceImpl implements FactoryService {
         certificateRequest.keyStorePassword = request.keyStorePassword;
         try {
             CertificateResponse certificateResponse = registrationServiceClient
-                    .subscribeFactory(certificateRequest);
+                    .registerFactory(certificateRequest);
+
+            LOGGER.debug("Certificates for the new Factory created:"//
+                    + "\nKEYSTORE:\n{}"//
+                    + "\n"//
+                    + "\nTRUSTSTORE:\n{}", //
+                    certificateResponse.keystore,
+                    certificateResponse.truststore);
 
             /*
              * Return generated content
@@ -67,22 +78,25 @@ class FactoryServiceImpl implements FactoryService {
             response.truststore = certificateResponse.truststore;
             return response;
         } catch (Exception e) {
-            repository.delete(factoryBean);
+            factoryRepository.delete(factoryBean);
+            LOGGER.error(
+                    "An error occurred retrieving the certificates for the factory.",
+                    e);
             // TODO: improve exception handling
-            throw new RuntimeException(e);
+            throw new SubscriptionException(e);
         }
     }
 
     @Override
     public FactoryDTO getById(UUID id) {
-        FactoryBean factoryBean = repository.findById(id);
+        FactoryBean factoryBean = factoryRepository.findById(id);
         return converter.sourceToDest(factoryBean);
     }
 
     @Override
     public List<FactoryDTO> getAllStations() {
         List<FactoryDTO> factoryDTOs = null;
-        List<FactoryBean> factoryBeans = repository.findAll().list();
+        List<FactoryBean> factoryBeans = factoryRepository.findAll().list();
         factoryDTOs = converter.allSourceToDest(factoryBeans);
         return factoryDTOs;
     }
