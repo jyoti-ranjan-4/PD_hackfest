@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
-import io.qiot.manufacturing.all.commons.domain.registration.MachineryRegisterRequest;
+import io.qiot.manufacturing.datacenter.commons.domain.registration.MachinerySubscriptionRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.service.machinery.MachineryService;
 
 /**
@@ -59,7 +59,7 @@ public class MachineryResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public SubscriptionResponse subscribe(
-            @Valid MachineryRegisterRequest request) {
+            @Valid MachinerySubscriptionRequest request) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("register(String) - start");
         }

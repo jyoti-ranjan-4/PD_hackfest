@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
-import io.qiot.manufacturing.all.commons.domain.registration.MachineryRegisterRequest;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateResponse;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.MachineryCertificateRequest;
+import io.qiot.manufacturing.datacenter.commons.domain.registration.MachinerySubscriptionRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.MachineryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.exception.SubscriptionException;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
@@ -41,7 +41,7 @@ class MachineryServiceImpl implements MachineryService {
     RegistrationServiceClient registrationServiceClient;
 
     @Override
-    public SubscriptionResponse subscribe(MachineryRegisterRequest request) {
+    public SubscriptionResponse subscribe(MachinerySubscriptionRequest request) {
         MachineryBean machineryBean = new MachineryBean();
         machineryBean.serial = request.serial;
         machineryBean.name = request.name;

@@ -13,6 +13,10 @@ import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateR
 import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryCertificateRequest;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.MachineryCertificateRequest;
 
+/**
+ * @author andreabattaglia
+ *
+ */
 @Path("/v1/register")
 @RegisterRestClient(configKey = "registration-service-api")
 public interface RegistrationServiceClient {

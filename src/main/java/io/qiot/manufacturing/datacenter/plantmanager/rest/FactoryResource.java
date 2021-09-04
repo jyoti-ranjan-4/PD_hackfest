@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryRegisterRequest;
+import io.qiot.manufacturing.datacenter.commons.domain.registration.FactorySubscriptionRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.service.factory.FactoryService;
 
 /**
@@ -59,15 +59,11 @@ public class FactoryResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public SubscriptionResponse subscribe(
-            @Valid FactoryRegisterRequest request) {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("register(String) - start");
-        }
+            @Valid FactorySubscriptionRequest request) {
+        LOGGER.debug("Received subscription request from factory {}",
+                request.name);
 
         SubscriptionResponse response = service.subscribe(request);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("register(String) - end");
-        }
         return response;
     }
 

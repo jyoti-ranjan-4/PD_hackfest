@@ -5,11 +5,11 @@ import java.util.UUID;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
-import io.qiot.manufacturing.all.commons.domain.registration.MachineryRegisterRequest;
+import io.qiot.manufacturing.datacenter.commons.domain.registration.MachinerySubscriptionRequest;
 
 public interface MachineryService {
 
-    SubscriptionResponse subscribe(MachineryRegisterRequest request);
+    SubscriptionResponse subscribe(MachinerySubscriptionRequest request);
 
     MachineryDTO getById(UUID id);
 

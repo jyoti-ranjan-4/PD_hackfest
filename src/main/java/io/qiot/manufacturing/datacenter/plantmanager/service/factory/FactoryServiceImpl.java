@@ -13,9 +13,8 @@ import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateResponse;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryCertificateRequest;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryRegisterRequest;
+import io.qiot.manufacturing.datacenter.commons.domain.registration.FactorySubscriptionRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.FactoryBean;
-import io.qiot.manufacturing.datacenter.plantmanager.exception.SubscriptionException;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.service.registration.RegistrationServiceClient;
 import io.qiot.manufacturing.datacenter.plantmanager.util.converter.FactoryConverter;
@@ -37,7 +36,7 @@ class FactoryServiceImpl implements FactoryService {
     RegistrationServiceClient registrationServiceClient;
 
     @Override
-    public SubscriptionResponse subscribe(FactoryRegisterRequest request) {
+    public SubscriptionResponse subscribe(FactorySubscriptionRequest request) {
         /*
          * persist & flush the new entity (and get the generated ID)
          */
@@ -58,33 +57,44 @@ class FactoryServiceImpl implements FactoryService {
         certificateRequest.serial = request.serial;
         certificateRequest.name = request.name;
         certificateRequest.keyStorePassword = request.keyStorePassword;
-        try {
-            CertificateResponse certificateResponse = registrationServiceClient
-                    .registerFactory(certificateRequest);
 
-            LOGGER.debug("Certificates for the new Factory created:"//
-                    + "\nKEYSTORE:\n{}"//
-                    + "\n"//
-                    + "\nTRUSTSTORE:\n{}", //
-                    certificateResponse.keystore,
-                    certificateResponse.truststore);
+        CertificateResponse certificateResponse = null;
 
-            /*
-             * Return generated content
-             */
-            SubscriptionResponse response = new SubscriptionResponse();
-            response.id = factoryBean.id;
-            response.keystore = certificateResponse.keystore;
-            response.truststore = certificateResponse.truststore;
-            return response;
-        } catch (Exception e) {
-            factoryRepository.delete(factoryBean);
-            LOGGER.error(
-                    "An error occurred retrieving the certificates for the factory.",
-                    e);
-            // TODO: improve exception handling
-            throw new SubscriptionException(e);
+        while (certificateResponse == null) {
+            // TODO: put sleep time in application.properties
+            long sleepTime = 2000;
+            try {
+
+                certificateResponse = registrationServiceClient
+                        .registerFactory(certificateRequest);
+            } catch (Exception e) {
+                // TODO: improve exception handling
+                LOGGER.info(
+                        "An error occurred registering the factory. "
+                                + "Retrying in {} millis.\n Error message: {}",
+                        sleepTime, e.getMessage());
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
+
+        LOGGER.debug("Certificates for the new Factory created:"//
+                + "\nKEYSTORE:\n{}"//
+                + "\n"//
+                + "\nTRUSTSTORE:\n{}", //
+                certificateResponse.keystore, certificateResponse.truststore);
+
+        /*
+         * Return generated content
+         */
+        SubscriptionResponse response = new SubscriptionResponse();
+        response.id = factoryBean.id;
+        response.keystore = certificateResponse.keystore;
+        response.truststore = certificateResponse.truststore;
+        return response;
     }
 
     @Override
