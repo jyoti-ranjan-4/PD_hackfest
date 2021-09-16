@@ -41,12 +41,13 @@ class MachineryServiceImpl implements MachineryService {
     RegistrationServiceClient registrationServiceClient;
 
     @Override
-    public SubscriptionResponse subscribe(MachinerySubscriptionRequest request) {
+    public SubscriptionResponse subscribe(
+            MachinerySubscriptionRequest request) {
         MachineryBean machineryBean = new MachineryBean();
         machineryBean.serial = request.serial;
         machineryBean.name = request.name;
-        machineryBean.factory=factoryRepository.findById(request.factoryId);
-        
+        machineryBean.factory = factoryRepository.findById(request.factoryId);
+
         machineryRepository.persistAndFlush(machineryBean);
 
         LOGGER.debug("Factory entity persisted, machinery ID assigned: {}",
@@ -79,6 +80,7 @@ class MachineryServiceImpl implements MachineryService {
             response.id = machineryBean.id;
             response.keystore = certificateResponse.keystore;
             response.truststore = certificateResponse.truststore;
+            response.subscribedOn = machineryBean.registeredOn;
             return response;
         } catch (Exception e) {
             machineryRepository.delete(machineryBean);
@@ -99,7 +101,8 @@ class MachineryServiceImpl implements MachineryService {
     @Override
     public List<MachineryDTO> getAllStations() {
         List<MachineryDTO> machineryDTOs = null;
-        List<MachineryBean> machineryBeans = machineryRepository.findAll().list();
+        List<MachineryBean> machineryBeans = machineryRepository.findAll()
+                .list();
         machineryDTOs = converter.allSourceToDest(machineryBeans);
         return machineryDTOs;
     }
