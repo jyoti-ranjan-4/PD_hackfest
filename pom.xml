@@ -45,6 +45,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-mutiny</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-health</artifactId>
+        </dependency>
         <!-- COMMONS -->
         <dependency>
             <groupId>io.qiot.manufacturing.all</groupId>
@@ -107,6 +111,14 @@
         </dependency>
     </dependencies>
     <profiles>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <jkube.environment>prod</jkube.environment>
+                <jkube.build.strategy>jib</jkube.build.strategy>
+                <jkube.generator.name>quay.io/qiotmanufacturing/datacenter-plant-manager:${project.version}</jkube.generator.name>
+            </properties>
+        </profile>
         <profile>
             <id>github-actions</id>
             <activation>
