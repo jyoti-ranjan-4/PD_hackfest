@@ -1,7 +1,7 @@
 image:
   ## Name of the image you want to build/deploy
   ## Defaults to the release name
-  name: quay.io/qiotmanufacturing/datacenter-registration
+  name: quay.io/qiotmanufacturing/datacenter-plant-manager
   ## Tag that you want to build/deploy
   tag: latest 
 
@@ -57,3 +57,6 @@ deploy:
       ## Properties go here
       quarkus.kubernetes-client.namespace=manufacturing-dev
       qiot.cert-manager.enabled=true
+      registration-service-api/mp-rest/url=http://registration-service:8080
+      quarkus.datasource.jdbc.url=jdbc:postgresql://sqlstorage-service:5432/qiot_manufacturing
+      
