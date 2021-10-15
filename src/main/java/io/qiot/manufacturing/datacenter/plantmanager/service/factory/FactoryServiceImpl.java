@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
+import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateRequest;
 import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateResponse;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.FactoryCertificateRequest;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.FactorySubscriptionRequest;
+import io.qiot.manufacturing.datacenter.commons.domain.subscription.FactorySubscriptionRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.FactoryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.service.registration.RegistrationServiceClient;
@@ -52,8 +52,8 @@ class FactoryServiceImpl implements FactoryService {
         /*
          * Get certificates
          */
-        FactoryCertificateRequest certificateRequest = new FactoryCertificateRequest();
-        certificateRequest.factoryId = factoryBean.id;
+        CertificateRequest certificateRequest = new CertificateRequest();
+        certificateRequest.domain = "";
         certificateRequest.serial = request.serial;
         certificateRequest.name = request.name;
         certificateRequest.keyStorePassword = request.keyStorePassword;
@@ -66,7 +66,7 @@ class FactoryServiceImpl implements FactoryService {
             try {
 
                 certificateResponse = registrationServiceClient
-                        .registerFactory(certificateRequest);
+                        .provisionCertificate(certificateRequest);
             } catch (Exception e) {
                 // TODO: improve exception handling
                 LOGGER.info(

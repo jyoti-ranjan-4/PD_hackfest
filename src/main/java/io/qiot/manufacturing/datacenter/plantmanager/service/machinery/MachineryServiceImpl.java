@@ -11,11 +11,8 @@ import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.MachineryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateResponse;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.MachineryCertificateRequest;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.MachinerySubscriptionRequest;
+import io.qiot.manufacturing.datacenter.commons.domain.subscription.MachinerySubscriptionRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.MachineryBean;
-import io.qiot.manufacturing.datacenter.plantmanager.exception.SubscriptionException;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.MachineryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.service.registration.RegistrationServiceClient;
@@ -53,43 +50,43 @@ class MachineryServiceImpl implements MachineryService {
         LOGGER.debug("Factory entity persisted, machinery ID assigned: {}",
                 machineryBean.id);
 
-        /*
-         * Get certificates
-         */
-        MachineryCertificateRequest certificateRequest = new MachineryCertificateRequest();
-        certificateRequest.factoryId = request.factoryId;
-        certificateRequest.machineryId = machineryBean.id;
-        certificateRequest.serial = request.serial;
-        certificateRequest.name = request.name;
-        certificateRequest.keyStorePassword = request.keyStorePassword;
-        try {
-            CertificateResponse certificateResponse = registrationServiceClient
-                    .registerMachinery(certificateRequest);
-
-            LOGGER.debug("Certificates for the new Machinery created:"//
-                    + "\nKEYSTORE:\n{}"//
-                    + "\n"//
-                    + "\nTRUSTSTORE:\n{}", //
-                    certificateResponse.keystore,
-                    certificateResponse.truststore);
-
-            /*
-             * Return generated content
-             */
+//        /*
+//         * Get certificates
+//         */
+//        CertificateRequest certificateRequest = new CertificateRequest();
+//        certificateRequest.factoryId = request.factoryId;
+//        certificateRequest.machineryId = machineryBean.id;
+//        certificateRequest.serial = request.serial;
+//        certificateRequest.name = request.name;
+//        certificateRequest.keyStorePassword = request.keyStorePassword;
+//        try {
+//            CertificateResponse certificateResponse = registrationServiceClient
+//                    .provisionCertificate(certificateRequest);
+//
+//            LOGGER.debug("Certificates for the new Machinery created:"//
+//                    + "\nKEYSTORE:\n{}"//
+//                    + "\n"//
+//                    + "\nTRUSTSTORE:\n{}", //
+//                    certificateResponse.keystore,
+//                    certificateResponse.truststore);
+//
+//            /*
+//             * Return generated content
+//             */
             SubscriptionResponse response = new SubscriptionResponse();
             response.id = machineryBean.id;
-            response.keystore = certificateResponse.keystore;
-            response.truststore = certificateResponse.truststore;
+//            response.keystore = certificateResponse.keystore;
+//            response.truststore = certificateResponse.truststore;
             response.subscribedOn = machineryBean.registeredOn;
             return response;
-        } catch (Exception e) {
-            machineryRepository.delete(machineryBean);
-            LOGGER.error(
-                    "An error occurred retrieving the certificates for the factory.",
-                    e);
-            // TODO: improve exception handling
-            throw new SubscriptionException(e);
-        }
+//        } catch (Exception e) {
+//            machineryRepository.delete(machineryBean);
+//            LOGGER.error(
+//                    "An error occurred retrieving the certificates for the factory.",
+//                    e);
+//            // TODO: improve exception handling
+//            throw new SubscriptionException(e);
+//        }
     }
 
     @Override
