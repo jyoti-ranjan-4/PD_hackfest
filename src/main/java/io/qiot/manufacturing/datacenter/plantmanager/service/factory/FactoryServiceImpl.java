@@ -11,13 +11,13 @@ import org.slf4j.Logger;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateRequest;
-import io.qiot.manufacturing.datacenter.commons.domain.registration.CertificateResponse;
 import io.qiot.manufacturing.datacenter.commons.domain.subscription.FactorySubscriptionRequest;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.FactoryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
-import io.qiot.manufacturing.datacenter.plantmanager.service.registration.RegistrationServiceClient;
 import io.qiot.manufacturing.datacenter.plantmanager.util.converter.FactoryConverter;
+import io.qiot.ubi.all.registration.client.RegistrationServiceClient;
+import io.qiot.ubi.all.registration.domain.CertificateRequest;
+import io.qiot.ubi.all.registration.domain.CertificateResponse;
 
 @ApplicationScoped
 class FactoryServiceImpl implements FactoryService {
@@ -57,6 +57,7 @@ class FactoryServiceImpl implements FactoryService {
         certificateRequest.serial = request.serial;
         certificateRequest.name = request.name;
         certificateRequest.keyStorePassword = request.keyStorePassword;
+        certificateRequest.ca=true;
 
         CertificateResponse certificateResponse = null;
 

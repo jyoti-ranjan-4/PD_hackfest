@@ -15,8 +15,8 @@ import io.qiot.manufacturing.datacenter.commons.domain.subscription.MachinerySub
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.MachineryBean;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.FactoryRepository;
 import io.qiot.manufacturing.datacenter.plantmanager.persistence.MachineryRepository;
-import io.qiot.manufacturing.datacenter.plantmanager.service.registration.RegistrationServiceClient;
 import io.qiot.manufacturing.datacenter.plantmanager.util.converter.MachineryConverter;
+import io.qiot.ubi.all.registration.client.RegistrationServiceClient;
 
 @ApplicationScoped
 class MachineryServiceImpl implements MachineryService {
@@ -69,10 +69,10 @@ class MachineryServiceImpl implements MachineryService {
 //                    + "\nTRUSTSTORE:\n{}", //
 //                    certificateResponse.keystore,
 //                    certificateResponse.truststore);
-//
-//            /*
-//             * Return generated content
-//             */
+
+            /*
+             * Return generated content
+             */
             SubscriptionResponse response = new SubscriptionResponse();
             response.id = machineryBean.id;
 //            response.keystore = certificateResponse.keystore;

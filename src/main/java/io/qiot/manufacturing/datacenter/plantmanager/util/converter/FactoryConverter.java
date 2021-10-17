@@ -6,8 +6,8 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 
 import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
-import io.qiot.manufacturing.all.commons.util.converter.DataObjectConverter;
 import io.qiot.manufacturing.datacenter.plantmanager.domain.pojo.FactoryBean;
+import io.qiot.ubi.all.utilities.converter.DataObjectConverter;
 
 @ApplicationScoped
 public class FactoryConverter
