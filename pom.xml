@@ -115,6 +115,49 @@
             <artifactId>quarkus-hibernate-validator</artifactId>
         </dependency>
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.jkube</groupId>
+                <artifactId>openshift-maven-plugin</artifactId>
+                <version>1.3.0</version>
+            </plugin>
+            <plugin>
+                <groupId>${quarkus.platform.group-id}</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>generate-code</goal>
+                            <goal>generate-code-tests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
+                <configuration>
+                    <parameters>${maven.compiler.parameters}</parameters>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                        <maven.home>${maven.home}</maven.home>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <profiles>
         <profile>
             <id>prod</id>
@@ -205,3 +248,4 @@
         </profile>
     </profiles>
 </project>
+    

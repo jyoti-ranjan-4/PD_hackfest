@@ -56,7 +56,7 @@ deploy:
     properties: |-
       ## Properties go here
       quarkus.kubernetes-client.namespace=manufacturing-dev
-      qiot.cert-manager.enabled=true
+      quarkus.http.port=8080
       registration-service-api/mp-rest/url=http://registration-service:8080
       quarkus.datasource.jdbc.url=jdbc:postgresql://sqlstorage-service:5432/qiot_manufacturing
       
