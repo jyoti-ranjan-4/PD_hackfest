@@ -95,6 +95,8 @@ class FactoryServiceImpl implements FactoryService {
         response.id = factoryBean.id;
         response.keystore = certificateResponse.keystore;
         response.truststore = certificateResponse.truststore;
+        response.tlsCert = certificateResponse.tlsCert;
+        response.tlsKey = certificateResponse.tlsKey;
         response.subscribedOn=factoryBean.registeredOn;
         return response;
     }
