@@ -65,13 +65,18 @@ public class FactoryResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public SubscriptionResponse subscribe(
-            @Valid FactorySubscriptionRequest request) throws JsonProcessingException {
+            @Valid FactorySubscriptionRequest request) throws Exception {
         LOGGER.info(
                 "Received subscription request from factory \"{}\" with data \n{}",
                 request.name, MAPPER.writerWithDefaultPrettyPrinter()
                         .writeValueAsString(request));
 
         SubscriptionResponse response = service.subscribe(request);
+        
+        LOGGER.info("Sending response back to the caller: \n{}",
+                MAPPER.writerWithDefaultPrettyPrinter()
+                        .writeValueAsString(response));
+
         return response;
     }
 

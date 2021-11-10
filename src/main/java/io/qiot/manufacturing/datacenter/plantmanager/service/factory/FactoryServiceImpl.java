@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
 import io.qiot.manufacturing.datacenter.commons.domain.subscription.FactorySubscriptionRequest;
@@ -26,6 +28,9 @@ class FactoryServiceImpl implements FactoryService {
     Logger LOGGER;
 
     @Inject
+    ObjectMapper MAPPER;
+
+    @Inject
     FactoryRepository factoryRepository;
 
     @Inject
@@ -36,7 +41,7 @@ class FactoryServiceImpl implements FactoryService {
     RegistrationServiceClient registrationServiceClient;
 
     @Override
-    public SubscriptionResponse subscribe(FactorySubscriptionRequest request) {
+    public SubscriptionResponse subscribe(FactorySubscriptionRequest request) throws Exception {
         /*
          * persist & flush the new entity (and get the generated ID)
          */
@@ -44,9 +49,9 @@ class FactoryServiceImpl implements FactoryService {
         factoryBean.serial = request.serial;
         factoryBean.name = request.name;
 
-        factoryRepository.persistAndFlush(factoryBean);
+        factoryRepository.persist(factoryBean);
 
-        LOGGER.debug("Factory entity persisted, factory ID assigned: {}",
+        LOGGER.info("Factory entity persisted, factory ID assigned: {}",
                 factoryBean.id);
 
         /*
@@ -66,9 +71,17 @@ class FactoryServiceImpl implements FactoryService {
         // TODO: put sleep time in application.properties
         long sleepTime = 2000;
         try {
+            LOGGER.info(
+                    "Attempting to provision a new CA cert with the following data: \n{}",
+                    MAPPER.writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(certificateRequest));
 
             certificateResponse = registrationServiceClient
                     .provisionCertificate(certificateRequest);
+
+            LOGGER.info("CA cert obtained: {}",
+                    MAPPER.writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(certificateResponse));
 
             /*
              * Return generated content
@@ -80,6 +93,9 @@ class FactoryServiceImpl implements FactoryService {
             response.tlsCert = certificateResponse.tlsCert;
             response.tlsKey = certificateResponse.tlsKey;
             response.subscribedOn = factoryBean.registeredOn;
+            LOGGER.info("Factory subscription process completed successfully: \n{}",
+                    MAPPER.writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(response));
             return response;
         } catch (Exception e) {
             // TODO: improve exception handling
@@ -88,8 +104,7 @@ class FactoryServiceImpl implements FactoryService {
                             + "Retrying in {} millis.\n Error message: {}",
                     sleepTime, e.getMessage());
 
-            factoryRepository.deleteById(factoryBean.id);
-            factoryRepository.flush();
+            factoryRepository.delete(factoryBean);
 
             throw e;
             // try {
