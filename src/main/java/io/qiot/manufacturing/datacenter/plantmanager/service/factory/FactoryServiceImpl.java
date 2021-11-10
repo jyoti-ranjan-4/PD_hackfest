@@ -1,5 +1,6 @@
 package io.qiot.manufacturing.datacenter.plantmanager.service.factory;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,6 +51,7 @@ class FactoryServiceImpl implements FactoryService {
         factoryBean.name = request.name;
 
         factoryRepository.persist(factoryBean);
+        factoryBean.registeredOn=Instant.now();
 
         LOGGER.info("Factory entity persisted, factory ID assigned: {}",
                 factoryBean.id);

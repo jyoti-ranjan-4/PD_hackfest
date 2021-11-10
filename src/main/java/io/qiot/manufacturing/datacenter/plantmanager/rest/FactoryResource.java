@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -45,25 +46,19 @@ public class FactoryResource {
     FactoryService service;
 
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/all")
     public List<FactoryDTO> getAll() {
         return service.getAllStations();
     }
 
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/id/{id}")
     public FactoryDTO getById(@PathParam("id") @NotNull UUID id) {
         return service.getById(id);
     }
 
     @Transactional
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @POST
     public SubscriptionResponse subscribe(
             @Valid FactorySubscriptionRequest request) throws Exception {
         LOGGER.info(
