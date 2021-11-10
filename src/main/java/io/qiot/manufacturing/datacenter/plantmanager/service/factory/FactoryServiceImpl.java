@@ -63,7 +63,7 @@ class FactoryServiceImpl implements FactoryService {
 
         CertificateResponse certificateResponse = null;
 
-        while (certificateResponse == null) {
+//        while (certificateResponse == null) {
             // TODO: put sleep time in application.properties
             long sleepTime = 2000;
             try {
@@ -88,7 +88,7 @@ class FactoryServiceImpl implements FactoryService {
 //                } catch (InterruptedException ie) {
 //                    Thread.currentThread().interrupt();
 //                }
-            }
+//            }
         }
 
         LOGGER.debug("Certificates for the new Factory created:"//
