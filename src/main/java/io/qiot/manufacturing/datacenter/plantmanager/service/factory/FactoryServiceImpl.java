@@ -91,12 +91,6 @@ class FactoryServiceImpl implements FactoryService {
 //            }
         }
 
-        LOGGER.debug("Certificates for the new Factory created:"//
-                + "\nKEYSTORE:\n{}"//
-                + "\n"//
-                + "\nTRUSTSTORE:\n{}", //
-                certificateResponse.keystore, certificateResponse.truststore);
-
         /*
          * Return generated content
          */
