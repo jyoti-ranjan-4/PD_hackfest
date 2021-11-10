@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.ClientErrorException;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
@@ -53,6 +54,7 @@ class FactoryServiceImpl implements FactoryService {
          * Get certificates
          */
         CertificateRequest certificateRequest = new CertificateRequest();
+        certificateRequest.id=factoryBean.id;
         certificateRequest.domain = "";
         certificateRequest.serial = request.serial;
         certificateRequest.name = request.name;
@@ -68,7 +70,14 @@ class FactoryServiceImpl implements FactoryService {
 
                 certificateResponse = registrationServiceClient
                         .provisionCertificate(certificateRequest);
-            } catch (Exception e) {
+            } catch (ClientErrorException e) {
+                // TODO: improve exception handling
+                LOGGER.info(
+                        "An error occurred registering the factory:  {}",
+                        e.getMessage());
+                factoryRepository.deleteById(factoryBean.id);
+                factoryRepository.flush();
+            }catch (Exception e) {
                 // TODO: improve exception handling
                 LOGGER.info(
                         "An error occurred registering the factory. "
