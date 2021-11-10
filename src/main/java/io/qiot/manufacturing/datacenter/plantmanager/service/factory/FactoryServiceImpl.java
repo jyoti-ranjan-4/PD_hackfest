@@ -83,11 +83,11 @@ class FactoryServiceImpl implements FactoryService {
                         "An error occurred registering the factory. "
                                 + "Retrying in {} millis.\n Error message: {}",
                         sleepTime, e.getMessage());
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                }
+//                try {
+//                    Thread.sleep(sleepTime);
+//                } catch (InterruptedException ie) {
+//                    Thread.currentThread().interrupt();
+//                }
             }
         }
 
