@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.ClientErrorException;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
@@ -54,54 +53,52 @@ class FactoryServiceImpl implements FactoryService {
          * Get certificates
          */
         CertificateRequest certificateRequest = new CertificateRequest();
-        certificateRequest.id=factoryBean.id;
+        certificateRequest.id = factoryBean.id;
         certificateRequest.domain = "";
         certificateRequest.serial = request.serial;
         certificateRequest.name = request.name;
         certificateRequest.keyStorePassword = request.keyStorePassword;
-        certificateRequest.ca=true;
+        certificateRequest.ca = true;
 
         CertificateResponse certificateResponse = null;
 
-//        while (certificateResponse == null) {
-            // TODO: put sleep time in application.properties
-            long sleepTime = 2000;
-            try {
+        // while (certificateResponse == null) {
+        // TODO: put sleep time in application.properties
+        long sleepTime = 2000;
+        try {
 
-                certificateResponse = registrationServiceClient
-                        .provisionCertificate(certificateRequest);
-            } catch (ClientErrorException e) {
-                // TODO: improve exception handling
-                LOGGER.info(
-                        "An error occurred registering the factory:  {}",
-                        e.getMessage());
-                factoryRepository.deleteById(factoryBean.id);
-                factoryRepository.flush();
-            }catch (Exception e) {
-                // TODO: improve exception handling
-                LOGGER.info(
-                        "An error occurred registering the factory. "
-                                + "Retrying in {} millis.\n Error message: {}",
-                        sleepTime, e.getMessage());
-//                try {
-//                    Thread.sleep(sleepTime);
-//                } catch (InterruptedException ie) {
-//                    Thread.currentThread().interrupt();
-//                }
-//            }
+            certificateResponse = registrationServiceClient
+                    .provisionCertificate(certificateRequest);
+
+            /*
+             * Return generated content
+             */
+            SubscriptionResponse response = new SubscriptionResponse();
+            response.id = factoryBean.id;
+            response.keystore = certificateResponse.keystore;
+            response.truststore = certificateResponse.truststore;
+            response.tlsCert = certificateResponse.tlsCert;
+            response.tlsKey = certificateResponse.tlsKey;
+            response.subscribedOn = factoryBean.registeredOn;
+            return response;
+        } catch (Exception e) {
+            // TODO: improve exception handling
+            LOGGER.info(
+                    "An error occurred registering the factory. "
+                            + "Retrying in {} millis.\n Error message: {}",
+                    sleepTime, e.getMessage());
+
+            factoryRepository.deleteById(factoryBean.id);
+            factoryRepository.flush();
+
+            throw e;
+            // try {
+            // Thread.sleep(sleepTime);
+            // } catch (InterruptedException ie) {
+            // Thread.currentThread().interrupt();
+            // }
+            // }
         }
-
-        /*
-         * Return generated content
-         */
-        SubscriptionResponse response = new SubscriptionResponse();
-        response.id = factoryBean.id;
-        response.keystore = certificateResponse.keystore;
-        response.truststore = certificateResponse.truststore;
-        response.tlsCert = certificateResponse.tlsCert;
-        response.tlsKey = certificateResponse.tlsKey;
-        response.subscribedOn=factoryBean.registeredOn;
-        return response;
     }
 
     @Override

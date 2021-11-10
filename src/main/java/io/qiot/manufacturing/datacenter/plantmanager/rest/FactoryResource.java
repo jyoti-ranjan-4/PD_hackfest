@@ -17,6 +17,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.qiot.manufacturing.all.commons.domain.landscape.FactoryDTO;
 import io.qiot.manufacturing.all.commons.domain.landscape.SubscriptionResponse;
 import io.qiot.manufacturing.datacenter.commons.domain.subscription.FactorySubscriptionRequest;
@@ -34,6 +37,9 @@ public class FactoryResource {
 
     @Inject
     Logger LOGGER;
+
+    @Inject
+    ObjectMapper MAPPER;
 
     @Inject
     FactoryService service;
@@ -59,9 +65,11 @@ public class FactoryResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public SubscriptionResponse subscribe(
-            @Valid FactorySubscriptionRequest request) {
-        LOGGER.debug("Received subscription request from factory {}",
-                request.name);
+            @Valid FactorySubscriptionRequest request) throws JsonProcessingException {
+        LOGGER.info(
+                "Received subscription request from factory \"{}\" with data \n{}",
+                request.name, MAPPER.writerWithDefaultPrettyPrinter()
+                        .writeValueAsString(request));
 
         SubscriptionResponse response = service.subscribe(request);
         return response;
