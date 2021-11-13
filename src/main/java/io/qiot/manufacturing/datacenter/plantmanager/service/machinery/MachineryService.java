@@ -9,7 +9,7 @@ import io.qiot.manufacturing.datacenter.commons.domain.subscription.MachinerySub
 
 public interface MachineryService {
 
-    SubscriptionResponse subscribe(MachinerySubscriptionRequest request);
+//    SubscriptionResponse subscribe(MachinerySubscriptionRequest request);
 
     MachineryDTO getById(UUID id);
 

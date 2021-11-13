@@ -58,12 +58,12 @@
         <dependency>
             <groupId>io.qiot.manufacturing.datacenter</groupId>
             <artifactId>domain-model</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.5</version>
         </dependency>
         <dependency>
             <groupId>io.qiot.manufacturing.datacenter</groupId>
             <artifactId>utilities</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>io.qiot.ubi.all</groupId>
@@ -74,6 +74,11 @@
             <groupId>io.qiot.ubi.all</groupId>
             <artifactId>registration-commons</artifactId>
             <version>1.0.7</version>
+        </dependency>
+        <!-- STREAM -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
         </dependency>
         <!-- REST -->
         <dependency>
